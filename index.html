@@ -47,6 +47,21 @@
                 xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xmlHttp.send("data=via-xhttp-request");
             }
+        
+	var slCtl = null;
+
+        function pluginLoaded(sender, args) {
+		console.log('loaded');
+            slCtl = sender.getHost();
+        }
+        
+        function postDataViaSlvApp() {
+            slCtl.Content.ManagedService.PostData("http://localhost:82/postdata", "sent-from-slv!");
+		slCtl.Content.ManagedService.RequestCompleted = function(){
+			console.log('response received');
+		}
+        }
+
         /*
         $(function(){
             $('#frame-method').click(function(){
@@ -69,7 +84,21 @@
         <input type="button" value="hidden frame" id='frame-method' onclick="postDataViaFrame()" />
         <input type="button" value="hidden window" id='window-method' onclick="postDataViaWindow()" />
         <input type="button" value="XMLHttpRequest" id='xml-http-method' onclick="postDataViaXHttpRequest()" />
-<iframe class="hidden" id="frame-data-sender" src="/form.html">
+        <input type="button" value="SilverLight" id='slv-method' onclick="postDataViaSlvApp()" />
+
+	<iframe class="hidden" id="frame-data-sender" src="/form.html">
 </iframe>
+        <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="5" height="5">
+		  <param name="source" value="ClientBin/SLV2JSTest.xap"/>
+		  <param name="background" value="white" />
+            <param name="minRuntimeVersion" value="5.0.61118.0" />
+
+            <param name="onLoad" value="pluginLoaded" />
+
+		  <param name="autoUpgrade" value="true" />
+		  <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration:none">
+ 			  <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
+		  </a>
+	    </object>
 </body>
 </html>

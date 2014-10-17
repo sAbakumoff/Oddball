@@ -10,7 +10,9 @@ app.get('/', function (req, res) {
 });
 
 app.post( '/postdata', function( request, response ) {
+
 	var data = request.body.data
+	console.log('received data %s', data);
      return response.send( data );
 });
 
