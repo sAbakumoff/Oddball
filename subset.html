@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>Sub set sum problem</title>
+<script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+<script type='text/javascript'>
+function solve(input, targetSum){
+    var sortedInput = input.slice().sort();
+    //console.log(input); console.log(sortedInput);
+    var track = [];
+    for(var i = 0; i <  input.length; i++){
+        track.push(0);
+    }
+    solution(0, Number.POSITIVE_INFINITY, targetSum, sortedInput, track);    
+}
+
+function solution(lookStart, currentSum, targetSum, input, track){
+    if(currentSum === targetSum){
+        var str = '';
+        for(var i=0; i< track.length;i++){
+            if(track[i] == 1){
+                str+=input[i].toString() + ' ';
+            }           
+        }
+ 		console.log(str);
+        //console.log(track);
+		var currentOutput = $('#output').val();
+		var newOutput = currentOutput + str + '\r\n';
+		$('#output').val(newOutput);
+    }
+	if(currentSum == Number.POSITIVE_INFINITY)
+		currentSum = 0;
+    for(i = lookStart; i<input.length; i++){
+        if(currentSum + input[i] > targetSum){
+            continue;
+        }
+        if(i>0 && input[i] == input[i-1] && track[i-1] == 0){
+            continue;
+        }
+        track[i] = 1;
+        solution(i+1, currentSum + input[i], targetSum, input, track);
+        track[i] = 0;
+    }
+}
+$(function(){
+  $('#btnRun').click(function(){
+    var input = [];
+	for(var i=0;i<100;i++){
+		input.push(0);
+	}
+    solve(input, 0);
+  });
+});
+</script>
+</head>
+
+<body>
+<input id='btnRun' type='button' value='lets dance!' />
+<br/>
+<textarea id='output' cols='50' rows='10'></textarea>
+</body>
+
+</html>
